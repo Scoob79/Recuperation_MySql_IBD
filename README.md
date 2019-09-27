@@ -5,8 +5,8 @@ Procédure pour restaurer une base Mysql depuis les fichier FRM et IBD
 Restauration MySQL depuis les fichiers .IBD :
 =============================================
 
-ATTENTION : ne restaurer que vos BASE pas les bases mysql, sys, phpmyadmin
-			Assurez-vous que tout les fichiers sont en groupe et user MYSQL
+ATTENTION : ne restaurez que vos BASES pas les bases mysql, sys, phpmyadmin
+	    Assurez-vous que tout les fichiers sont en groupe et user MYSQL
 
 Dans un premier temps, il faut récupérer les fichiers IBD de l'ancien serveur et les stocker sur le nouveau.
 Il se trouve dans /var/lib/mysql.
@@ -29,17 +29,17 @@ Un peu de nettoyage :
 
 Il vous faudra ensuite mettre ";" à la fin de toutes les requêtes.
 
-Assurez-vous que les DATABASE soient bien toute créées sur le serveur et executez cette commande :
+Assurez-vous que les DATABASE soient bien toutes créées sur le serveur et executez cette commande :
 
 	mysql -u root -p < create2.sql # Envoi toutes les requêtes de création de table au serveur
 	
-	Si vous êtes arrivé à obtenir un fichier propre (une requête par ligne et un ";" à la fin de chaque ligne") vous pouvez utiliser cette commande :
+Si vous êtes arrivé à obtenir un fichier propre (une requête par ligne et un ";" à la fin de chaque ligne") vous pouvez utiliser cette commande :
 	
 		cat /media/hd/sauvegarde/sauvegarde_cerbere/frm_creation_structure_base4.sql | while  read ligne; do echo $ligne > cat; mysql -u {user} --password={password} < cat; done;
 
 La commande {find . -iname '*.frm' | cut -d "/" -f3 | sed -e "s/.frm//g"}, executée dans le répertoire de sauvegarde devrait vous fournir le nom de toutes les tables
 
-Il supprimer tout les nouveaux IBD du serveur et les remplacer par les anciens
+Il faut supprimer tout les nouveaux IBD du serveur et les remplacer par les anciens
 
 Créez ce script :
 	
@@ -52,11 +52,11 @@ Créez ce script :
 			echo "ALTER TABLE \`$base\`.\`$table\` DISCARD TABLESPACE;"
 	done
 
-Executez le dans le dossier de sauvegarde il créra les requêtes tout seul
+Executez le dans le dossier de sauvegarde il créera les requêtes tout seul
 
 	script.sh > req.sql
 	
-Cette commande executera ligne par ligne les requêtes ainsi si il y a une erreur sur une requête il ne s'arrêtera pas 
+Cette commande exécutera ligne par ligne les requêtes ainsi si il y a une erreur sur une requête il ne s'arrêtera pas 
 
 	cat req.sql | while  read ligne; do echo $ligne > cat; mysql -u {user} --password={password} < cat; done;
 
