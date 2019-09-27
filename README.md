@@ -33,9 +33,10 @@ Assurez-vous que les DATABASE soient bien toute créées sur le serveur et execu
 
 	mysql -u root -p < create2.sql # Envoi toutes les requêtes de création de table au serveur
 	
-	Si vous êtes arrivé à obtenir un fichier propre (une requête par ligne et un ";" à la fin de chaque ligne") vous pouvez utiliser cette commande :
+Si vous êtes arrivé à obtenir un fichier propre (une requête par ligne et un ";" à la fin de chaque ligne") vous pouvez utiliser cette commande :
 	
-		cat /media/hd/sauvegarde/sauvegarde_cerbere/frm_creation_structure_base4.sql | while  read ligne; do echo $ligne > cat; mysql -u {user} --password={password} < cat; done;
+	cat /media/hd/sauvegarde/sauvegarde_cerbere/frm_creation_structure_base4.sql | while  read ligne; do echo $ligne > cat; 	
+	mysql -u {user} --password={password} < cat; done;
 
 La commande {find . -iname '*.frm' | cut -d "/" -f3 | sed -e "s/.frm//g"}, executée dans le répertoire de sauvegarde devrait vous fournir le nom de toutes les tables
 
@@ -62,5 +63,6 @@ Cette commande executera ligne par ligne les requêtes ainsi si il y a une erreu
 
 Copier tout les fichiers IBD de la sauvegarde vers /var/lib/mysql en respectant l'arborecense
 
+Et pour finir importez les données :
 
-
+	cat req.sql | while read ligne; do echo $ligne > cat; mysql -u {user} --password={password} < cat; done;
